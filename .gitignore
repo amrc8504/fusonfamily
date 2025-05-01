@@ -1,1 +1,17 @@
+# Secret environment values
 .env
+
+# SQLite DB (only for local dev)
+db.sqlite3
+
+# Bytecode
+*.py[cod]
+__pycache__/
+
+# Static and media
+/media/
+/staticfiles/
+
+# OS junk
+.DS_Store
+Thumbs.db
