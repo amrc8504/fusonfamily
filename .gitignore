@@ -4,9 +4,10 @@
 # SQLite DB (only for local dev)
 db.sqlite3
 
-# Bytecode
-*.py[cod]
+# Ignore all __pycache__ directories
 __pycache__/
+**/__pycache__/
+*.py[cod]
 
 # Static and media
 /media/

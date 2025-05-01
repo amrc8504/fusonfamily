@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: family-schedule
+    env: python
+    plan: free
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn fs_project.wsgi:application"
+    envVars:
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: family-schedule-db
+          property: connectionString
+
+databases:
+  - name: family-schedule-db
+    plan: free
