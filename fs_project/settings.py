@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'fs_project.urls'
@@ -129,5 +130,3 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Send emails to the console (for development/testing)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
