@@ -1,0 +1,9 @@
+{% extends "schedules/base.html" %}
+{% block content %}
+<h2>Add a Schedule</h2>
+<form method="post" id="add-event">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Save</button>
+</form>
+{% endblock %}

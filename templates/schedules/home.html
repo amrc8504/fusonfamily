@@ -1,0 +1,118 @@
+{% extends "schedules/base.html" %}
+{% block content %}
+
+<h2>Fuson Family Schedule</h2>
+
+<!-- Inject your event data safely -->
+<script id="event-data" type="application/json">
+  {{ event_data_json|safe }}
+</script>
+
+<!-- Calendar Legend -->
+<div id="legend" class="d-flex gap-3 justify-content-center my-3">
+    <span><span class="legend-box" style="background:#0d6efd;"></span> Work</span><br>
+    <span><span class="legend-box" style="background:#FFD700;"></span> School</span><br>
+    <span><span class="legend-box" style="background:#198754;"></span> Drill</span><br>
+    <span><span class="legend-box" style="background:#6c757d;"></span> Other</span><br>
+  </div>
+
+<!-- Calendar Container -->
+<div class="container-fluid px-2">
+    <div id="calendar"></div>
+  </div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete Schedule</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <div class="modal-body">
+          <p id="modalEventTitle"></p>
+          <input type="hidden" id="modalEventId">
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" id="confirmDeleteBtn" class="btn btn-danger">Delete</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block scripts %}
+<!-- JS goes here so it runs AFTER content is rendered -->
+<script>
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    console.log("🔥 FullCalendar setup starting...");
+    const calendarEl = document.getElementById('calendar');
+    const eventData = JSON.parse(document.getElementById('event-data').textContent);
+    const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+
+    let currentView = window.innerWidth < 576 ? 'listWeek' : 'dayGridMonth';
+
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: currentView,
+        headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,listWeek',
+  },
+        events: eventData,
+        eventDidMount: function(info) {
+    // Support multiline title
+    const titleEl = info.el.querySelector('.fc-event-title');
+    if (titleEl) {
+      titleEl.innerHTML = info.event.title.replace('\n', '<br>');
+    }
+  },
+        eventClick: function (info) {
+            document.getElementById('modalEventTitle').textContent = `Delete this schedule?\n\n${info.event.title}`;
+            document.getElementById('modalEventId').value = info.event.id;
+            deleteModal.show();
+        }
+    });
+
+    document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+        const eventId = document.getElementById('modalEventId').value;
+        fetch(`/delete/${eventId}/`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+            }
+        }).then(response => {
+            if (response.ok) {
+                calendar.getEventById(eventId).remove();
+                deleteModal.hide();
+            } else {
+                alert("Failed to delete event.");
+            }
+        });
+    });
+
+    calendar.render();
+});
+</script>
+{% endblock %}

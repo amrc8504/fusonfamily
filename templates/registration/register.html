@@ -1,0 +1,29 @@
+{% extends "schedules/base.html" %}
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+  <div class="login-container" style="width: 100%; max-width: 500px;">
+    <h2 class="text-center">Create an Account</h2>
+
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="mb-3">
+          <label class="form-label">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}
+            <div class="form-text">{{ field.help_text }}</div>
+          {% endif %}
+          {% for error in field.errors %}
+            <div class="text-danger small">{{ error }}</div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+
+      <button type="submit" class="btn btn-success w-100">Register</button>
+    </form>
+
+    <p class="mt-3 text-center">Already have an account? <a href="{% url 'login' %}">Log in here</a>.</p>
+  </div>
+</div>
+<br>
+{% endblock %}
