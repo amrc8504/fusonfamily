@@ -1,0 +1,75 @@
+  #calendar {
+      min-height: 400px;
+  }
+
+  #legend {
+      border: 1px solid black;
+  }
+
+  .legend-dot {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+
+  .fc-toolbar-title {
+      font-size: 1.5rem;
+  }
+
+  #add-event {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: left;
+      justify-content: baseline;
+      border-radius: 10px;
+  }
+
+  #announcement-card {
+      padding: 10px;
+  }
+
+  .img-fluid {
+      width: auto;
+      height: 400px;
+  }
+
+  input[type="file"].form-control-file {
+    padding: 8px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+  }
+
+  @media (max-width: 576px) {
+      .fc-event-title {
+          font-size: 10px;
+      }
+
+      .fc-toolbar-title {
+          font-size: 0.5rem;
+          text-align: center;
+      }
+
+      .card-title {
+          font-size: 1.2rem;
+      }
+
+      .card-subtitle {
+          font-size: 0.9rem;
+      }
+
+      .btn-sm {
+          font-size: 0.85rem;
+          padding: 6px 12px;
+      }
+
+      #announcement-card {
+          padding: 10px;
+      }
+      select.form-select {
+        width: 100%;
+      }
+  }
