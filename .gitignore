@@ -11,7 +11,7 @@ __pycache__/
 
 # Static and media
 /media/
-/static/
+/staticfiles/
 
 # OS junk
 .DS_Store
